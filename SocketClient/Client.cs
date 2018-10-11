@@ -20,6 +20,7 @@ namespace SocketClient
         private Socket socketClient;
         private Thread thread;
         private String serverip = "192.168.13.64";
+        private Int32 port = 8009;
 
         public Client()
         {
@@ -36,7 +37,7 @@ namespace SocketClient
             {
                 serverip = tbserverip.Text.Trim();
                 socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                socketClient.Connect(serverip, 8009);
+                socketClient.Connect(serverip, port);
                 PcMsg pm = new PcMsg
                 {
                     sendpcname = pcname.Text,
@@ -98,7 +99,15 @@ namespace SocketClient
             byte[] buffter = Encoding.UTF8.GetBytes(pm.SerializeObject());
             try
             {
-                int temp = socketClient.Send(buffter);
+                SocketAsyncEventArgs socketAsyncEventArgs = new SocketAsyncEventArgs()
+                {
+
+                };
+                socketAsyncEventArgs.SetBuffer(buffter, 0, buffter.Length);
+                socketAsyncEventArgs.Completed += SocketAsyncEventArgs_Completed;
+                bool result = socketClient.SendAsync(socketAsyncEventArgs);
+
+                //int temp = socketClient.Send(buffter);
                 //msgtext.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + pm.sendpcname + " 说: " + strsend + System.Environment.NewLine);
                 sendtext.Clear();
             }
@@ -106,6 +115,11 @@ namespace SocketClient
             {
                 msgtext.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "：" + ex.Message + System.Environment.NewLine);
             }
+        }
+
+        private void SocketAsyncEventArgs_Completed(object sender, SocketAsyncEventArgs e)
+        {
+            //MessageBox.Show("OK");
         }
 
         /// <summary>
