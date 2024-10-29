@@ -41,20 +41,20 @@ namespace Replan
             txtInterestMonthOrDay.ItemsSource = System.Enum.GetValues(typeof(EnumInterestMonthOrDay));
             txtInterestMonthOrDay.SelectedItem = EnumInterestMonthOrDay.按日付息;
 
-            cmTypePlan.ItemsSource = System.Enum.GetValues(typeof(IousType));
-            cmTypeReturn.ItemsSource = System.Enum.GetValues(typeof(IousType));
-            cmTypeAdvance.ItemsSource = System.Enum.GetValues(typeof(IousType));
-            cmTypeExtend.ItemsSource = System.Enum.GetValues(typeof(IousType));
+            //cmTypePlan.ItemsSource = System.Enum.GetValues(typeof(IousType));
+            //cmTypeReturn.ItemsSource = System.Enum.GetValues(typeof(IousType));
+            //cmTypeAdvance.ItemsSource = System.Enum.GetValues(typeof(IousType));
+            //cmTypeExtend.ItemsSource = System.Enum.GetValues(typeof(IousType));
 
             Exhibition.Visibility = Visibility.Hidden;
             TQPrepayment.Visibility = Visibility.Hidden;
             Repayment.Visibility = Visibility.Hidden;
             ReturnCz.IsEnabled = false;
 
-            colRetrieveAmount.Visible = false;
-            colRetrieveInterest.Visible = false;
-            colRetrieveIAddA.Visible = false;
-            colRetrieveManagementFee.Visible = false;
+            colRetrieveAmount.Visibility = Visibility.Collapsed;
+            colRetrieveInterest.Visibility = Visibility.Collapsed;
+            colRetrieveIAddA.Visibility = Visibility.Collapsed;
+            colRetrieveManagementFee.Visibility = Visibility.Collapsed;
 
             txtAdvanceDate.Text = DateTime.Now.ToShortDateString();
             AdvanceCz.IsEnabled = false;
@@ -91,7 +91,7 @@ namespace Replan
             int.TryParse(txtRepaymentNum.Text, out RepaymentNum) &&
             decimal.TryParse(txtInterestOfFee.Text, out InterestOfFee) &&
             DateTime.TryParse(txtBegindate.Text, out Begindate) &&
-                //int.TryParse(txtRepaymentMonthNum.Text,out RepaymentMonthNum)&&
+            //int.TryParse(txtRepaymentMonthNum.Text,out RepaymentMonthNum)&&
             int.TryParse(txtInterestSetDay.Text, out InterestSetDay) &&
             DateTime.TryParse(txtEndDate.Text, out EndDate) &&
             !string.IsNullOrEmpty(LoanBackDayType) &&
@@ -149,7 +149,7 @@ namespace Replan
             }
         }
 
-        private void txtEditValueChanged(object sender, DevExpress.Xpf.Editors.EditValueChangedEventArgs e)
+        private void txtEditValueChanged(object sender, RoutedEventArgs e)
         {
             if (!isload) return;
 
@@ -218,7 +218,7 @@ namespace Replan
         {
             foreach (var GridColumn in PlanGrid.Columns)
             {
-                GridColumn.ReadOnly = isReadOnly;
+                GridColumn.IsReadOnly = isReadOnly;
             }
             ContextMenu.Visibility = isReadOnly ? Visibility.Collapsed : Visibility.Visible;
         }
@@ -232,7 +232,7 @@ namespace Replan
             ObservableCollection<AfterLoanRepaymentPlan> listOCALRP = this.PlanGrid.ItemsSource as ObservableCollection<AfterLoanRepaymentPlan>;
             try
             {
-                int intCurALRP = listOCALRP.IndexOf((AfterLoanRepaymentPlan)PlanGrid.GetFocusedRow());
+                int intCurALRP = listOCALRP.IndexOf((AfterLoanRepaymentPlan)PlanGrid.SelectedItem);
                 if (intCurALRP >= 0) listOCALRP.Insert(intCurALRP, new AfterLoanRepaymentPlan());
                 else listOCALRP.Add(new AfterLoanRepaymentPlan());
             }
@@ -259,17 +259,17 @@ namespace Replan
             if (LoanBackDayType != EnumReturnType.分期付息按还款计划表分期还本 &&
                 LoanBackDayType != EnumReturnType.自定义还款) return;
 
-            if (PlanGrid.GetFocusedRow() == null || MessageBox.Show(this, "您将删除选择的记录,是否继续？", "提示", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
+            if (PlanGrid.SelectedItem == null || MessageBox.Show(this, "您将删除选择的记录,是否继续？", "提示", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
                 return;
 
             ObservableCollection<AfterLoanRepaymentPlan> listOCALRP = this.PlanGrid.ItemsSource as ObservableCollection<AfterLoanRepaymentPlan>;
 
-            if (((AfterLoanRepaymentPlan)PlanGrid.GetFocusedRow()).Type != IousType.未还款)
+            if (((AfterLoanRepaymentPlan)PlanGrid.SelectedItem).Type != IousType.未还款)
             {
-                MessageBox.Show(this, "该期次" + ((AfterLoanRepaymentPlan)PlanGrid.GetFocusedRow()).Type + ",不允许删除！");
+                MessageBox.Show(this, "该期次" + ((AfterLoanRepaymentPlan)PlanGrid.SelectedItem).Type + ",不允许删除！");
                 return;
             }
-            listOCALRP.Remove((AfterLoanRepaymentPlan)PlanGrid.GetFocusedRow());
+            listOCALRP.Remove((AfterLoanRepaymentPlan)PlanGrid.SelectedItem);
 
             for (int i = 0; i < listOCALRP.Count; i++)
             {
@@ -281,7 +281,7 @@ namespace Replan
             isCustom = false;
         }
 
-        private void txtInterestMonthOrDay_EditValueChanged_1(object sender, DevExpress.Xpf.Editors.EditValueChangedEventArgs e)
+        private void txtInterestMonthOrDay_EditValueChanged_1(object sender, RoutedEventArgs e)
         {
             CalculatePlan.DefaultInterest = (EnumInterestMonthOrDay)txtInterestMonthOrDay.SelectedItem;
         }
@@ -354,7 +354,7 @@ namespace Replan
 
             txtEndDate.Text = txtExtendDate.Text;
             txtInterestOfMonth.Text = txtExtendInterestOfMonth.Text;
-            ExtendBigEnd.Label = "    原终止日期：" + dtExtendDate.ToString("yyyy-MM-dd") + "   原月利率‰：" + txtInterestOfMonth.Text;
+            ExtendBigEnd.Text = "    原终止日期：" + dtExtendDate.ToString("yyyy-MM-dd") + "   原月利率‰：" + txtInterestOfMonth.Text;
         }
 
         //放款
@@ -382,10 +382,9 @@ namespace Replan
             //{
             //PlanGrid.Visibility = Visibility.Collapsed;
             LCloaninfo.IsEnabled = false;
-            gcPlanView.NewItemRowPosition = DevExpress.Xpf.Grid.NewItemRowPosition.None;
 
             ObservableCollection<AfterLoanRepaymentPlan> newOCalrp = new ObservableCollection<AfterLoanRepaymentPlan> { };
-            
+
             foreach (var Planalrp in PlanGridOCALRP)
             {
                 newOCalrp.Add(Planalrp.Copy());
@@ -393,8 +392,8 @@ namespace Replan
             ReturnGrid.ItemsSource = newOCalrp;
 
             ReturnGrid.Visibility = Visibility.Visible;
-            Alculate.Visibility = Visibility.Hidden;
-            Loan.Visibility = Visibility.Hidden;
+            Alculate.IsEnabled = false;
+            Loan.IsEnabled = false;
             Repayment.Visibility = Visibility.Visible;
             Exhibition.Visibility = Visibility.Visible;
             TQPrepayment.Visibility = Visibility.Visible;
@@ -402,15 +401,14 @@ namespace Replan
             AdvanceCz.IsEnabled = true;
             ExtendCz.IsEnabled = true;
 
-            colRetrieveAmount.Visible = true;
-            colRetrieveInterest.Visible = true;
-            colRetrieveIAddA.Visible = true;
-            colRetrieveManagementFee.Visible = true;
+            colRetrieveAmount.Visibility = Visibility.Collapsed;
+            colRetrieveInterest.Visibility = Visibility.Collapsed;
+            colRetrieveIAddA.Visibility = Visibility.Collapsed;
+            colRetrieveManagementFee.Visibility = Visibility.Collapsed;
 
             txtExtendInterestOfMonth.Text = txtInterestOfMonth.Text;
-            AdvanceBigEnd.Label = "    起始日期：" + txtBegindate.Text;
-            ExtendBigEnd.Label = "    原终止日期：" + txtEndDate.Text + "   原月利率‰：" + txtInterestOfMonth.Text;
-            this.Width = 1150;
+            AdvanceBigEnd.Text = "    起始日期：" + txtBegindate.Text;
+            ExtendBigEnd.Text = "    原终止日期：" + txtEndDate.Text + "   原月利率‰：" + txtInterestOfMonth.Text;
             //}
         }
 
@@ -551,7 +549,6 @@ namespace Replan
                 }
             }
             PlanGrid.ItemsSource = PlanGridOCALRP;
-            PlanGrid.RefreshData();
 
 
             ObservableCollection<AfterLoanRepaymentPlan> OCALRP = PlanGrid.ItemsSource as ObservableCollection<AfterLoanRepaymentPlan>;
@@ -568,13 +565,12 @@ namespace Replan
             txtzReturnAmount.Text = "0";
 
             ReturnGrid.ItemsSource = newOCalrp;
-            ReturnGrid.RefreshData();
             PlanGrid_ItemsSourceChanged_1(null, null);
         }
 
         decimal decRetrieve = 0;
         //将还款总额自动分配到总金额中
-        private void txtzReturnAmount_EditValueChanged_1(object sender, DevExpress.Xpf.Editors.EditValueChangedEventArgs e)
+        private void txtzReturnAmount_EditValueChanged_1(object sender, RoutedEventArgs e)
         {
             decimal dezReturnAmount = 0;
             decimal.TryParse(txtzReturnAmount.Text, out dezReturnAmount);
@@ -642,10 +638,9 @@ namespace Replan
             }
 
             ReturnGrid.ItemsSource = OCALRP;
-            ReturnGrid.RefreshData();
         }
 
-        private void txtAdvance_EditValueChanged_1(object sender, DevExpress.Xpf.Editors.EditValueChangedEventArgs e)
+        private void txtAdvance_EditValueChanged_1(object sender, RoutedEventArgs e)
         {
             strAdvance_EditValueChanged(true);
         }
@@ -672,7 +667,7 @@ namespace Replan
             {
                 ObservableCollection<AfterLoanRepaymentPlan> PlanGridOCALRP = PlanGrid.ItemsSource as ObservableCollection<AfterLoanRepaymentPlan>;
                 ObservableCollection<AfterLoanRepaymentPlan> ReturnGridOCALRP = ReturnGrid.ItemsSource as ObservableCollection<AfterLoanRepaymentPlan>;
-                if (ReturnGridOCALRP.Count <= 0 || ReturnGridOCALRP[0].PlanDate < dtAdvanceDate
+                if (ReturnGridOCALRP == null || PlanGridOCALRP == null || ReturnGridOCALRP.Count <= 0 || ReturnGridOCALRP[0].PlanDate < dtAdvanceDate
                     || ReturnGridOCALRP[0].Type != IousType.未还款 || PlanGridOCALRP.Count < ReturnGridOCALRP[0].Num)
                     return "未找到还款计划或上期状态为 未结清";
 
@@ -807,7 +802,7 @@ Begindate, 1, InterestSetDay, LoanBackDayType, InitialChargeType, EndDate, newLi
             return newOcAlrp;
         }
 
-        private void PlanGrid_ItemsSourceChanged_1(object sender, DevExpress.Xpf.Grid.ItemsSourceChangedEventArgs e)
+        private void PlanGrid_ItemsSourceChanged_1(object sender, RoutedEventArgs e)
         {
             ObservableCollection<AfterLoanRepaymentPlan> PlanGridOCALRP = PlanGrid.ItemsSource as ObservableCollection<AfterLoanRepaymentPlan>;
             ObservableCollection<AfterLoanRepaymentPlan> newAdvanceOCalrp = new ObservableCollection<AfterLoanRepaymentPlan> { };
@@ -823,13 +818,10 @@ Begindate, 1, InterestSetDay, LoanBackDayType, InitialChargeType, EndDate, newLi
                 newExtendOCalrp.Add(alrp.Copy());
             }
             AdvanceGrid.ItemsSource = newAdvanceOCalrp;
-            AdvanceGrid.RefreshData();
 
             ReturnGrid.ItemsSource = newReturnOCalrp;
-            ReturnGrid.RefreshData();
 
             ExtendGrid.ItemsSource = newExtendOCalrp;
-            ExtendGrid.RefreshData();
         }
     }
 

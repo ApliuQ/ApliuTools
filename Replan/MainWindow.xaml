@@ -1,402 +1,282 @@
-﻿<Window x:Class="Replan.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"  
-        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-        xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-        
-        Title="Replan 2.0" Height="600" Width="950" Icon="/Image/Program_Master_Icon.ico">
+﻿<Window
+    x:Class="Replan.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Replan 2.0"
+    Width="700"
+    Height="400"
+    Icon="/Image/Program_Master_Icon.ico">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <lc:LayoutControl Grid.Row="0" Padding="0" Margin="20,0,0,0" Orientation="Horizontal" >
-            <lc:LayoutGroup VerticalAlignment="Center" >
-                <Button x:Name="Alculate" Content="计算" HorizontalAlignment="Left" Width="75" Click="Alculate_Click"/>
-                <Button x:Name="Loan" Content="放款" HorizontalAlignment="Left" Width="75" Click="Loan_Click_1"/>
-                <Button x:Name="Repayment" Content="还款" HorizontalAlignment="Left" Width="75" Click="Repayment_Click_1"/>
-                <Button x:Name="TQPrepayment" Content="提前还款" HorizontalAlignment="Left" Width="85" Click="TQPrepayment_Click_1"  />
-                <Button x:Name="Exhibition" Content="展期" HorizontalAlignment="Left" Width="75" Click="Exhibition_Click_1"  />
-            </lc:LayoutGroup>
-        </lc:LayoutControl>
+        <WrapPanel
+            Grid.Row="0"
+            Margin="10,5"
+            Orientation="Horizontal">
+            <Button
+                x:Name="Alculate"
+                Width="75"
+                HorizontalAlignment="Left"
+                Click="Alculate_Click"
+                Content="计算" />
+            <Button
+                x:Name="Loan"
+                Width="75"
+                HorizontalAlignment="Left"
+                Click="Loan_Click_1"
+                Content="放款" />
+            <Button
+                x:Name="Repayment"
+                Width="75"
+                HorizontalAlignment="Left"
+                Click="Repayment_Click_1"
+                Content="还款" />
+            <Button
+                x:Name="TQPrepayment"
+                Width="85"
+                HorizontalAlignment="Left"
+                Click="TQPrepayment_Click_1"
+                Content="提前还款" />
+            <Button
+                x:Name="Exhibition"
+                Width="75"
+                HorizontalAlignment="Left"
+                Click="Exhibition_Click_1"
+                Content="展期" />
+        </WrapPanel>
 
-        <TabControl Grid.Row="1" x:Name="dxtcMain">
+        <TabControl x:Name="dxtcMain" Grid.Row="1">
             <TabItem x:Name="LoanInfo" Header="贷款信息">
-                <lc:LayoutControl x:Name="LCloaninfo" Padding="0" Orientation="Vertical" >
-                    <lc:LayoutGroup VerticalAlignment="Top" Margin="0,10,0,0">
-                        <lc:LayoutItem Label="放款金额：" LabelHorizontalAlignment="Right" >
-                            <dxe:TextEdit x:Name="txtPayAmount" Text="100000" MaskUseAsDisplayFormat="True" MaskType="Numeric" Mask="###,###,###,##0.00;"></dxe:TextEdit>
-                        </lc:LayoutItem>
-                        <lc:LayoutItem Label="月利率‰：" LabelHorizontalAlignment="Right" >
-                            <dxe:TextEdit x:Name="txtInterestOfMonth" Text="10" MaskUseAsDisplayFormat="True" MaskType="Numeric" Mask="##0.00;"></dxe:TextEdit>
-                        </lc:LayoutItem>
+                <Grid x:Name="LCloaninfo">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <WrapPanel Margin="0,10,0,0" VerticalAlignment="Center">
+                        <TextBlock Margin="5,5,0,5" Text="放款金额：" />
+                        <TextBox
+                            x:Name="txtPayAmount"
+                            Width="80"
+                            Text="100000" />
+                        <TextBlock Margin="5,5,0,5" Text="月利率‰：" />
+                        <TextBox x:Name="txtInterestOfMonth" Text="10" />
+                        <TextBlock Margin="5,5,0,5" Text="开始日期：" />
+                        <DatePicker
+                            x:Name="txtBegindate"
+                            SelectedDate="2016-01-01"
+                            SelectedDateChanged="txtEditValueChanged" />
+                        <TextBlock Margin="5,5,0,5" Text="终止日期：" />
+                        <DatePicker
+                            x:Name="txtEndDate"
+                            SelectedDate="2016-06-01"
+                            SelectedDateChanged="txtEditValueChanged" />
+                        <TextBlock Margin="5,5,0,5" Text="还款方式：" />
+                        <ComboBox x:Name="txtReturnType" SelectionChanged="txtEditValueChanged">
+                            <!--<ComboBoxItem IsSelected="True">等额本金</ComboBoxItem>
+                        <ComboBoxItem>等额本息</ComboBoxItem>-->
+                        </ComboBox>
+                        <TextBlock Margin="5,5,0,5" Text="计息方式：" />
+                        <ComboBox x:Name="txtInterestMonthOrDay" SelectionChanged="txtInterestMonthOrDay_EditValueChanged_1" />
+                        <TextBlock Margin="5,5,0,5" Text="结息日：" />
+                        <TextBox
+                            x:Name="txtInterestSetDay"
+                            Text="0"
+                            TextChanged="txtEditValueChanged" />
+                        <TextBlock Margin="5,5,0,5" Text="管理费利率‰：" />
+                        <TextBox x:Name="txtInterestOfFee" Text="0" />
+                        <TextBlock Margin="5,5,0,5" Text="总期次：" />
+                        <TextBox x:Name="txtRepaymentNum" Text="5" />
+                        <TextBlock Margin="5,5,0,5" Text="算头算尾类型：" />
+                        <ComboBox x:Name="txtLoanBackDayType">
+                            <!--<ComboBoxItem IsSelected="True">算头不算尾</ComboBoxItem>
+                        <ComboBoxItem>算头又算尾</ComboBoxItem>
+                        <ComboBoxItem>不算头不算尾</ComboBoxItem>
+                        <ComboBoxItem>算尾不算头</ComboBoxItem>-->
+                        </ComboBox>
+                        <TextBlock Margin="5,5,0,5" Text="首期结息类型：" />
+                        <ComboBox x:Name="txtInitialChargeType" SelectionChanged="txtEditValueChanged">
+                            <!--<ComboBoxItem IsSelected="True">当月放款当期还款</ComboBoxItem>
+                        <ComboBoxItem>当月放款下期还款</ComboBoxItem>-->
+                        </ComboBox>
+                    </WrapPanel>
 
-                        <lc:LayoutItem Label="开始日期：" LabelHorizontalAlignment="Right" >
-                            <dxe:DateEdit x:Name="txtBegindate" Text="2016-01-01" MaskUseAsDisplayFormat="True" MaskType="DateTime"  Mask="yyyy-MM-dd" EditValueChanged="txtEditValueChanged"></dxe:DateEdit>
-                        </lc:LayoutItem>
-                        <lc:LayoutItem Label="终止日期：" LabelHorizontalAlignment="Right" >
-                            <dxe:DateEdit x:Name="txtEndDate" Text="2016-06-01" MaskUseAsDisplayFormat="True" MaskType="DateTime"  Mask="yyyy-MM-dd" EditValueChanged="txtEditValueChanged"></dxe:DateEdit>
-                        </lc:LayoutItem>
-                        <lc:LayoutItem Label="还款方式：" LabelHorizontalAlignment="Right">
-                            <dxe:ComboBoxEdit x:Name="txtReturnType" IsTextEditable="False" EditValueChanged="txtEditValueChanged">
-                                <!--<dxe:ComboBoxEditItem IsSelected="True">等额本金</dxe:ComboBoxEditItem>
-                        <dxe:ComboBoxEditItem>等额本息</dxe:ComboBoxEditItem>-->
-                            </dxe:ComboBoxEdit>
-                        </lc:LayoutItem>
-                    </lc:LayoutGroup>
-                    <lc:LayoutGroup VerticalAlignment="Top" Margin="0,10,0,10">
-                        <lc:LayoutItem Label="计息方式：" LabelHorizontalAlignment="Right" Width="160">
-                            <dxe:ComboBoxEdit x:Name="txtInterestMonthOrDay" IsTextEditable="False" EditValueChanged="txtInterestMonthOrDay_EditValueChanged_1">
-                            </dxe:ComboBoxEdit>
-                        </lc:LayoutItem>
-                        <lc:LayoutItem Label="结息日：" LabelHorizontalAlignment="Right" Width="120">
-                            <dxe:TextEdit x:Name="txtInterestSetDay" Text="0" MaskUseAsDisplayFormat="True" MaskType="Numeric" Mask="#0;" EditValueChanged="txtEditValueChanged"></dxe:TextEdit>
-                        </lc:LayoutItem>
-                        <lc:LayoutItem Label="管理费利率‰：" LabelHorizontalAlignment="Right" Width="160">
-                            <dxe:TextEdit x:Name="txtInterestOfFee" Text="0" MaskUseAsDisplayFormat="True" MaskType="Numeric" Mask="##0.00;"></dxe:TextEdit>
-                        </lc:LayoutItem>
-                        <lc:LayoutItem Label="总期次：" LabelHorizontalAlignment="Right" Width="120">
-                            <dxe:TextEdit x:Name="txtRepaymentNum" Text="5" MaskUseAsDisplayFormat="True" MaskType="Numeric" Mask="##0;"></dxe:TextEdit>
-                        </lc:LayoutItem>
-                        <lc:LayoutItem Label="算头算尾类型：" LabelHorizontalAlignment="Right">
-                            <dxe:ComboBoxEdit x:Name="txtLoanBackDayType" IsTextEditable="False">
-                                <!--<dxe:ComboBoxEditItem IsSelected="True">算头不算尾</dxe:ComboBoxEditItem>
-                        <dxe:ComboBoxEditItem>算头又算尾</dxe:ComboBoxEditItem>
-                        <dxe:ComboBoxEditItem>不算头不算尾</dxe:ComboBoxEditItem>
-                        <dxe:ComboBoxEditItem>算尾不算头</dxe:ComboBoxEditItem>-->
-                            </dxe:ComboBoxEdit>
-                        </lc:LayoutItem>
-                        <lc:LayoutItem Label="首期结息类型：" LabelHorizontalAlignment="Right" >
-                            <dxe:ComboBoxEdit x:Name="txtInitialChargeType" IsTextEditable="False" EditValueChanged="txtEditValueChanged">
-                                <!--<dxe:ComboBoxEditItem IsSelected="True">当月放款当期还款</dxe:ComboBoxEditItem>
-                        <dxe:ComboBoxEditItem>当月放款下期还款</dxe:ComboBoxEditItem>-->
-                            </dxe:ComboBoxEdit>
-                        </lc:LayoutItem>
-                    </lc:LayoutGroup>
-                    <dxg:GridControl x:Name="PlanGrid" VerticalContentAlignment="Center" ItemsSourceChanged="PlanGrid_ItemsSourceChanged_1">
-                        <dxg:GridControl.Columns>
-                            <dxg:GridColumn Header="期号" ReadOnly="True" Width="40" FieldName="Num" />
-                            <dxg:GridColumn Header="还款日期" Width="120" FieldName="PlanDate">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:DateEditSettings MaskType="DateTime" Mask="yyyy-MM-dd" MaskUseAsDisplayFormat="True"/>
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-
-                            <dxg:GridColumn Header="状态" ReadOnly="True" Width="80" FieldName="Type" >
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:ComboBoxEditSettings x:Name="cmTypePlan"/>
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-
-                            <dxg:GridColumn Header="应收本金" Width="120" FieldName="PlanAmount">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收本金" Width="120" FieldName="RetrieveAmount" x:Name="colRetrieveAmount">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="应收利息" Width="100" FieldName="PlanInterest">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收利息" Width="100" FieldName="RetrieveInterest" x:Name="colRetrieveInterest">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="应收本息合计" Width="100" FieldName="PlanIAddA">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收本息合计" Width="100" FieldName="RetrieveIAddA" ReadOnly="True" x:Name="colRetrieveIAddA">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="应收管理费" Width="100" FieldName="PlanManagementFee">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收管理费" Width="100" FieldName="RetrieveManagementFee" x:Name="colRetrieveManagementFee">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <!--<dxg:GridColumn Header="是否提前还款" Width="100" FieldName="IsAdvance"/>-->
-                        </dxg:GridControl.Columns>
-                        <dxg:GridControl.TotalSummary>
-                            <dxg:GridSummaryItem FieldName="PlanInterest" SummaryType="Sum" ShowInColumn="PlanInterest" DisplayFormat=" {0:C2}" />
-                            <dxg:GridSummaryItem FieldName="PlanAmount" SummaryType="Sum"  ShowInColumn="PlanAmount" DisplayFormat=" {0:C2}"/>
-                            <dxg:GridSummaryItem FieldName="PlanIAddA" SummaryType="Sum"  ShowInColumn="PlanIAddA" DisplayFormat=" {0:C2}"/>
-                            <dxg:GridSummaryItem FieldName="PlanManagementFee" SummaryType="Sum" ShowInColumn="PlanManagementFee" DisplayFormat=" {0:C2}" />
-                        </dxg:GridControl.TotalSummary>
-                        <dxg:GridControl.View>
-                            <dxg:TableView x:Name="gcPlanView"  FontFamily="微软雅黑" FontSize="14" EditorButtonShowMode="ShowAlways"  ShowGroupPanel="False" ShowTotalSummary="True" ShowAutoFilterRow="False" 
-                               AllowEditing="true" AllowColumnFiltering="True" AllowFilterEditor="True" NewItemRowPosition="Bottom"/>
-                        </dxg:GridControl.View>
-                        <dxg:GridControl.ContextMenu>
+                    <DataGrid
+                        x:Name="PlanGrid"
+                        Grid.Row="1"
+                        VerticalContentAlignment="Center"
+                        SelectionChanged="PlanGrid_ItemsSourceChanged_1">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Num}" Header="期号" />
+                            <DataGridTextColumn Binding="{Binding PlanDate, StringFormat={}{0:yyyy-MM-dd}}" Header="还款日期" />
+                            <DataGridTextColumn Binding="{Binding Type}" Header="状态" />
+                            <DataGridTextColumn Binding="{Binding PlanAmount}" Header="应收本金" />
+                            <DataGridTextColumn
+                                x:Name="colRetrieveAmount"
+                                Binding="{Binding RetrieveAmount}"
+                                Header="实收本金" />
+                            <DataGridTextColumn Binding="{Binding PlanInterest}" Header="应收利息" />
+                            <DataGridTextColumn
+                                x:Name="colRetrieveInterest"
+                                Binding="{Binding RetrieveInterest}"
+                                Header="实收利息" />
+                            <DataGridTextColumn Binding="{Binding PlanIAddA}" Header="应收本息合计" />
+                            <DataGridTextColumn
+                                x:Name="colRetrieveIAddA"
+                                Binding="{Binding RetrieveIAddA}"
+                                Header="实收本息合计" />
+                            <DataGridTextColumn Binding="{Binding PlanManagementFee}" Header="应收管理费" />
+                            <DataGridTextColumn
+                                x:Name="colRetrieveManagementFee"
+                                Binding="{Binding RetrieveManagementFee}"
+                                Header="实收管理费" />
+                            <!--<DataGridTextColumn Header="是否提前还款"   Binding="{Binding IsAdvance"/>-->
+                        </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
                             <ContextMenu Name="ContextMenu" StaysOpen="true">
-                                <MenuItem Header="插入..." Click="MenuInsertItem_Click_1"/>
-                                <MenuItem Header="删除..." Click="MenuDeletetem_Click_1"/>
+                                <MenuItem Click="MenuInsertItem_Click_1" Header="插入..." />
+                                <MenuItem Click="MenuDeletetem_Click_1" Header="删除..." />
                             </ContextMenu>
-                        </dxg:GridControl.ContextMenu>
-                    </dxg:GridControl>
-                </lc:LayoutControl>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
+                    <!--  1、可编辑；2、缺少汇总数据  -->
+                </Grid>
             </TabItem>
-            
+
             <TabItem x:Name="ReturnCz" Header="还款信息">
-                <lc:LayoutControl Orientation="Vertical" Padding="0">
-                    <lc:LayoutGroup VerticalAlignment="Top" Margin="0,10,0,10">
-                        <lc:LayoutItem Label="还款总额：" LabelHorizontalAlignment="Right" Width="180">
-                            <dxe:TextEdit x:Name="txtzReturnAmount" MaskUseAsDisplayFormat="True" MaskType="Numeric" Mask="###,###,###,##0.00;" EditValueChanged="txtzReturnAmount_EditValueChanged_1"></dxe:TextEdit>
-                        </lc:LayoutItem>
-                        <lc:LayoutItem Label="     还款总额按利息、本金、管理费依次填充下面还款计划！" FontStyle="Oblique" LabelHorizontalAlignment="Right" >
-                        </lc:LayoutItem>
-                    </lc:LayoutGroup>
-                    <dxg:GridControl x:Name="ReturnGrid" Visibility="Collapsed" VerticalContentAlignment="Center">
-                        <dxg:GridControl.Columns>
-                            <dxg:GridColumn Header="期号" ReadOnly="True" Width="40" FieldName="Num"/>
-                            <dxg:GridColumn Header="还款日期" Width="120" FieldName="PlanDate" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:DateEditSettings MaskType="DateTime" Mask="yyyy-MM-dd" MaskUseAsDisplayFormat="True"/>
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <WrapPanel Margin="0,10,0,10" VerticalAlignment="Center">
+                        <TextBlock Margin="5,5,0,5" Text="还款总额：" />
+                        <TextBox
+                            x:Name="txtzReturnAmount"
+                            Width="80"
+                            TextChanged="txtzReturnAmount_EditValueChanged_1" />
+                        <TextBlock
+                            Margin="5,5,0,5"
+                            FontStyle="Oblique"
+                            Text="     还款总额按利息、本金、管理费依次填充下面还款计划！" />
+                    </WrapPanel>
+                    <DataGrid
+                        x:Name="ReturnGrid"
+                        Grid.Row="1"
+                        VerticalContentAlignment="Center"
+                        Visibility="Collapsed">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Num}" Header="期号" />
+                            <DataGridTextColumn Binding="{Binding PlanDate, StringFormat={}{0:yyyy-MM-dd}}" Header="还款日期" />
+                            <DataGridTextColumn Binding="{Binding Type}" Header="状态" />
+                            <DataGridTextColumn Binding="{Binding PlanAmount}" Header="应收本金" />
+                            <DataGridTextColumn Binding="{Binding RetrieveAmount}" Header="实收本金" />
+                            <DataGridTextColumn Binding="{Binding PlanInterest}" Header="应收利息" />
+                            <DataGridTextColumn Binding="{Binding RetrieveInterest}" Header="实收利息" />
+                            <DataGridTextColumn Binding="{Binding PlanIAddA}" Header="应收本息合计" />
+                            <DataGridTextColumn Binding="{Binding RetrieveIAddA}" Header="实收本息合计" />
+                            <DataGridTextColumn Binding="{Binding PlanManagementFee}" Header="应收管理费" />
+                            <DataGridTextColumn Binding="{Binding RetrieveManagementFee}" Header="实收管理费" />
+                            <!--<DataGridTextColumn Header="是否提前还款"   Binding="{Binding IsAdvance"/>-->
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+                <!--  1、可编辑；2、缺少汇总数据  -->
 
-                            <dxg:GridColumn Header="状态" ReadOnly="True" Width="80" FieldName="Type">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:ComboBoxEditSettings x:Name="cmTypeReturn"/>
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-
-                            <dxg:GridColumn Header="应收本金" Width="120" FieldName="PlanAmount" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收本金" Width="120" FieldName="RetrieveAmount" >
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="应收利息" Width="100" FieldName="PlanInterest" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收利息" Width="100" FieldName="RetrieveInterest">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="应收本息合计" Width="100" FieldName="PlanIAddA" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收本息合计" Width="100" FieldName="RetrieveIAddA" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="应收管理费" Width="100" FieldName="PlanManagementFee" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收管理费" Width="100" FieldName="RetrieveManagementFee">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <!--<dxg:GridColumn Header="是否提前还款" Width="100" FieldName="IsAdvance"/>-->
-                        </dxg:GridControl.Columns>
-                        <dxg:GridControl.TotalSummary>
-                            <dxg:GridSummaryItem FieldName="PlanInterest" SummaryType="Sum" ShowInColumn="PlanInterest" DisplayFormat=" {0:C2}" />
-                            <dxg:GridSummaryItem FieldName="PlanAmount" SummaryType="Sum"  ShowInColumn="PlanAmount" DisplayFormat=" {0:C2}"/>
-                            <dxg:GridSummaryItem FieldName="PlanIAddA" SummaryType="Sum"  ShowInColumn="PlanIAddA" DisplayFormat=" {0:C2}"/>
-                            <dxg:GridSummaryItem FieldName="PlanManagementFee" SummaryType="Sum" ShowInColumn="PlanManagementFee" DisplayFormat=" {0:C2}" />
-                        </dxg:GridControl.TotalSummary>
-                        <dxg:GridControl.View >
-                            <dxg:TableView  FontFamily="微软雅黑" FontSize="14" EditorButtonShowMode="ShowAlways"  ShowGroupPanel="False" ShowTotalSummary="True" ShowAutoFilterRow="False" 
-                               AllowEditing="True" AllowColumnFiltering="True" AllowFilterEditor="True" />
-                        </dxg:GridControl.View>
-                    </dxg:GridControl>
-                </lc:LayoutControl>
             </TabItem>
 
             <TabItem x:Name="AdvanceCz" Header="提前还款信息">
-                <lc:LayoutControl Orientation="Vertical" Padding="0">
-                    <lc:LayoutGroup VerticalAlignment="Top" Margin="0,10,0,10">
-                        <lc:LayoutItem Label="提前还款日期：" LabelHorizontalAlignment="Right" Width="185">
-                            <dxe:DateEdit x:Name="txtAdvanceDate" MaskUseAsDisplayFormat="True" MaskType="DateTime"  Mask="yyyy-MM-dd" EditValueChanged="txtAdvance_EditValueChanged_1"></dxe:DateEdit>
-                        </lc:LayoutItem>
-                        <lc:LayoutItem Label="提前还款本金：" LabelHorizontalAlignment="Right" Width="150">
-                            <dxe:TextEdit x:Name="txtAdvanceAmount" Text="0" MaskUseAsDisplayFormat="True" MaskType="Numeric" Mask="###,###,###,##0.00;" EditValueChanged="txtAdvance_EditValueChanged_1"></dxe:TextEdit>
-                        </lc:LayoutItem>
-                        <lc:LayoutItem Label="提前还款利息：" LabelHorizontalAlignment="Right" Width="150">
-                            <dxe:TextEdit x:Name="txtAdvanceInterest" Text="0" MaskUseAsDisplayFormat="True" MaskType="Numeric" Mask="###,###,###,##0.00;" ></dxe:TextEdit>
-                        </lc:LayoutItem>
-                        <lc:LayoutItem x:Name="AdvanceBigEnd" Label="     起始日期:" FontStyle="Oblique" LabelHorizontalAlignment="Right" >
-                        </lc:LayoutItem>
-                    </lc:LayoutGroup>
-                    <dxg:GridControl x:Name="AdvanceGrid" VerticalContentAlignment="Center">
-                        <dxg:GridControl.Columns>
-                            <dxg:GridColumn Header="期号" ReadOnly="True" Width="40" FieldName="Num"/>
-                            <dxg:GridColumn Header="还款日期" Width="120" FieldName="PlanDate" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:DateEditSettings MaskType="DateTime" Mask="yyyy-MM-dd" MaskUseAsDisplayFormat="True"/>
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <WrapPanel Margin="0,10,0,10" VerticalAlignment="Center">
+                        <TextBlock Margin="5,5,0,5" Text="提前还款日期：" />
+                        <DatePicker x:Name="txtAdvanceDate" SelectedDateChanged="txtAdvance_EditValueChanged_1" />
+                        <TextBlock Margin="5,5,0,5" Text="提前还款本金：" />
+                        <TextBox
+                            x:Name="txtAdvanceAmount"
+                            Width="80"
+                            Text="0"
+                            TextChanged="txtAdvance_EditValueChanged_1" />
 
-                            <dxg:GridColumn Header="状态" ReadOnly="True" Width="80" FieldName="Type">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:ComboBoxEditSettings x:Name="cmTypeAdvance"/>
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
+                        <TextBlock Margin="5,5,0,5" Text="提前还款利息：" />
+                        <TextBox
+                            x:Name="txtAdvanceInterest"
+                            Width="80"
+                            Text="0" />
+                        <TextBlock
+                            x:Name="AdvanceBigEnd"
+                            Margin="5,5,0,5"
+                            FontStyle="Oblique"
+                            Text="     起始日期:" />
+                    </WrapPanel>
+                    <DataGrid
+                        x:Name="AdvanceGrid"
+                        Grid.Row="1"
+                        VerticalContentAlignment="Center">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Num}" Header="期号" />
+                            <DataGridTextColumn Binding="{Binding PlanDate, StringFormat={}{0:yyyy-MM-dd}}" Header="还款日期" />
+                            <DataGridTextColumn Binding="{Binding Type}" Header="状态" />
+                            <DataGridTextColumn Binding="{Binding PlanAmount}" Header="应收本金" />
+                            <DataGridTextColumn Binding="{Binding RetrieveAmount}" Header="实收本金" />
+                            <DataGridTextColumn Binding="{Binding PlanInterest}" Header="应收利息" />
+                            <DataGridTextColumn Binding="{Binding RetrieveInterest}" Header="实收利息" />
+                            <DataGridTextColumn Binding="{Binding PlanIAddA}" Header="应收本息合计" />
+                            <DataGridTextColumn Binding="{Binding RetrieveIAddA}" Header="实收本息合计" />
+                            <DataGridTextColumn Binding="{Binding PlanManagementFee}" Header="应收管理费" />
+                            <DataGridTextColumn Binding="{Binding RetrieveManagementFee}" Header="实收管理费" />
+                            <!--<DataGridTextColumn Header="是否提前还款"   Binding="{Binding IsAdvance"/>-->
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+                <!--  1、可编辑；2、缺少汇总数据  -->
 
-                            <dxg:GridColumn Header="应收本金" Width="120" FieldName="PlanAmount" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收本金" Width="120" FieldName="RetrieveAmount" >
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="应收利息" Width="100" FieldName="PlanInterest" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收利息" Width="100" FieldName="RetrieveInterest">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="应收本息合计" Width="100" FieldName="PlanIAddA" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收本息合计" Width="100" FieldName="RetrieveIAddA" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="应收管理费" Width="100" FieldName="PlanManagementFee" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收管理费" Width="100" FieldName="RetrieveManagementFee">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <!--<dxg:GridColumn Header="是否提前还款" Width="100" FieldName="IsAdvance"/>-->
-                        </dxg:GridControl.Columns>
-                        <dxg:GridControl.TotalSummary>
-                            <dxg:GridSummaryItem FieldName="PlanInterest" SummaryType="Sum" ShowInColumn="PlanInterest" DisplayFormat=" {0:C2}" />
-                            <dxg:GridSummaryItem FieldName="PlanAmount" SummaryType="Sum"  ShowInColumn="PlanAmount" DisplayFormat=" {0:C2}"/>
-                            <dxg:GridSummaryItem FieldName="PlanIAddA" SummaryType="Sum"  ShowInColumn="PlanIAddA" DisplayFormat=" {0:C2}"/>
-                            <dxg:GridSummaryItem FieldName="PlanManagementFee" SummaryType="Sum" ShowInColumn="PlanManagementFee" DisplayFormat=" {0:C2}" />
-                        </dxg:GridControl.TotalSummary>
-                        <dxg:GridControl.View >
-                            <dxg:TableView  FontFamily="微软雅黑" FontSize="14" EditorButtonShowMode="ShowAlways"  ShowGroupPanel="False" ShowTotalSummary="True" ShowAutoFilterRow="False" AllowEditing="False"/>
-                        </dxg:GridControl.View>
-                    </dxg:GridControl>
-                </lc:LayoutControl>
             </TabItem>
 
             <TabItem x:Name="ExtendCz" Header="展期信息">
-                <lc:LayoutControl Orientation="Vertical" Padding="0">
-                    <lc:LayoutGroup VerticalAlignment="Top" Margin="0,10,0,10">
-                        <lc:LayoutItem Label="展期后到期日：" LabelHorizontalAlignment="Right" Width="185">
-                            <dxe:DateEdit x:Name="txtExtendDate" MaskUseAsDisplayFormat="True" MaskType="DateTime"  Mask="yyyy-MM-dd" EditValueChanged="txtAdvance_EditValueChanged_1"></dxe:DateEdit>
-                        </lc:LayoutItem>
-                        <lc:LayoutItem Label="展期后利率‰：" LabelHorizontalAlignment="Right" Width="150">
-                            <dxe:TextEdit x:Name="txtExtendInterestOfMonth" MaskUseAsDisplayFormat="True" MaskType="Numeric" Mask="###,###,###,##0.00;" ></dxe:TextEdit>
-                        </lc:LayoutItem>
-                        <lc:LayoutItem x:Name="ExtendBigEnd" Label="     终止日期:" FontStyle="Oblique" LabelHorizontalAlignment="Right" >
-                        </lc:LayoutItem>
-                    </lc:LayoutGroup>
-                    <dxg:GridControl x:Name="ExtendGrid" VerticalContentAlignment="Center">
-                        <dxg:GridControl.Columns>
-                            <dxg:GridColumn Header="期号" ReadOnly="True" Width="40" FieldName="Num"/>
-                            <dxg:GridColumn Header="还款日期" Width="120" FieldName="PlanDate" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:DateEditSettings MaskType="DateTime" Mask="yyyy-MM-dd" MaskUseAsDisplayFormat="True"/>
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <WrapPanel Margin="0,10,0,10" VerticalAlignment="Center">
+                        <TextBlock Margin="5,5,0,5" Text="展期后到期日：" />
 
-                            <dxg:GridColumn Header="状态" ReadOnly="True" Width="80" FieldName="Type">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:ComboBoxEditSettings x:Name="cmTypeExtend"/>
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
+                        <DatePicker x:Name="txtExtendDate" SelectedDateChanged="txtAdvance_EditValueChanged_1" />
+                        <TextBlock Margin="5,5,0,5" Text="展期后利率‰：" />
+                        <TextBox x:Name="txtExtendInterestOfMonth" />
+                        <TextBlock
+                            x:Name="ExtendBigEnd"
+                            Margin="5,5,0,5"
+                            FontStyle="Oblique"
+                            Text="     终止日期:" />
+                    </WrapPanel>
+                    <DataGrid
+                        x:Name="ExtendGrid"
+                        Grid.Row="1"
+                        VerticalContentAlignment="Center">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Num}" Header="期号" />
+                            <DataGridTextColumn Binding="{Binding PlanDate, StringFormat={}{0:yyyy-MM-dd}}" Header="还款日期" />
+                            <DataGridTextColumn Binding="{Binding Type}" Header="状态" />
+                            <DataGridTextColumn Binding="{Binding PlanAmount}" Header="应收本金" />
+                            <DataGridTextColumn Binding="{Binding RetrieveAmount}" Header="实收本金" />
+                            <DataGridTextColumn Binding="{Binding PlanInterest}" Header="应收利息" />
+                            <DataGridTextColumn Binding="{Binding RetrieveInterest}" Header="实收利息" />
+                            <DataGridTextColumn Binding="{Binding PlanIAddA}" Header="应收本息合计" />
+                            <DataGridTextColumn Binding="{Binding RetrieveIAddA}" Header="实收本息合计" />
+                            <DataGridTextColumn Binding="{Binding PlanManagementFee}" Header="应收管理费" />
+                            <DataGridTextColumn Binding="{Binding RetrieveManagementFee}" Header="实收管理费" />
+                            <!--<DataGridTextColumn Header="是否提前还款"   Binding="{Binding IsAdvance"/>-->
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+                <!--  1、可编辑；2、缺少汇总数据  -->
 
-                            <dxg:GridColumn Header="应收本金" Width="120" FieldName="PlanAmount" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收本金" Width="120" FieldName="RetrieveAmount" >
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="应收利息" Width="100" FieldName="PlanInterest" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收利息" Width="100" FieldName="RetrieveInterest">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="应收本息合计" Width="100" FieldName="PlanIAddA" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收本息合计" Width="100" FieldName="RetrieveIAddA" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="应收管理费" Width="100" FieldName="PlanManagementFee" ReadOnly="True">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn Header="实收管理费" Width="100" FieldName="RetrieveManagementFee">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c" MaskCulture="zh-CHS" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <!--<dxg:GridColumn Header="是否提前还款" Width="100" FieldName="IsAdvance"/>-->
-                        </dxg:GridControl.Columns>
-                        <dxg:GridControl.TotalSummary>
-                            <dxg:GridSummaryItem FieldName="PlanInterest" SummaryType="Sum" ShowInColumn="PlanInterest" DisplayFormat=" {0:C2}" />
-                            <dxg:GridSummaryItem FieldName="PlanAmount" SummaryType="Sum"  ShowInColumn="PlanAmount" DisplayFormat=" {0:C2}"/>
-                            <dxg:GridSummaryItem FieldName="PlanIAddA" SummaryType="Sum"  ShowInColumn="PlanIAddA" DisplayFormat=" {0:C2}"/>
-                            <dxg:GridSummaryItem FieldName="PlanManagementFee" SummaryType="Sum" ShowInColumn="PlanManagementFee" DisplayFormat=" {0:C2}" />
-                        </dxg:GridControl.TotalSummary>
-                        <dxg:GridControl.View >
-                            <dxg:TableView  FontFamily="微软雅黑" FontSize="14" EditorButtonShowMode="ShowAlways"  ShowGroupPanel="False" ShowTotalSummary="True" ShowAutoFilterRow="False" AllowEditing="False"/>
-                        </dxg:GridControl.View>
-                    </dxg:GridControl>
-                </lc:LayoutControl>
             </TabItem>
         </TabControl>
     </Grid>
