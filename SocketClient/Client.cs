@@ -1,4 +1,5 @@
-﻿using SendClass;
+// 注释
+using SendClass;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
